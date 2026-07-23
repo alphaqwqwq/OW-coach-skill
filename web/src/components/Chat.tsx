@@ -1,29 +1,70 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import type { Message, Hero } from '../types';
+import type { Message } from '../types';
 import { buildSystemPrompt } from '../lib/buildPrompt';
 import { detectHeroes } from '../lib/heroDetect';
 import { streamChat, type LLMConfig } from '../lib/llm';
 import type { ApiConfig } from './ApiKeyInput';
 
+const HISTORY_KEY = 'ow_coach_history';
+const WELCOME_MSG = '你好！我是 OW Coach，你的守望先锋教练。告诉我你遇到了什么问题，我来帮你分析。';
+
+interface HistoryData {
+  messages: Message[];
+  updatedAt: string;
+}
+
 interface Props {
   apiConfig: ApiConfig;
 }
 
+// 读取 localStorage 中的历史记录
+function loadHistory(): Message[] | null {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw) as HistoryData;
+    if (Array.isArray(data.messages) && data.messages.length > 0) {
+      return data.messages;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
+// 保存历史记录到 localStorage
+function saveHistory(messages: Message[]) {
+  try {
+    const data: HistoryData = { messages, updatedAt: new Date().toISOString() };
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(data));
+  } catch { /* ignore */ }
+}
+
+// 清除历史记录
+function clearHistory() {
+  localStorage.removeItem(HISTORY_KEY);
+}
+
 export default function Chat({ apiConfig }: Props) {
-  const [messages, setMessages] = useState<Message[]>([
-    { role: 'assistant', content: '你好！我是 OW Coach，你的守望先锋教练。告诉我你遇到了什么问题，我来帮你分析。' }
-  ]);
+  const [messages, setMessages] = useState<Message[]>(() => {
+    return loadHistory() || [{ role: 'assistant', content: WELCOME_MSG }];
+  });
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
-  const [systemPrompt, setSystemPrompt] = useState<string | null>(null);
   const [detectedHeroes, setDetectedHeroes] = useState<string[]>([]);
+  const [showMenu, setShowMenu] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // 自动滚动
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, streamingContent]);
+
+  // 自动保存
+  useEffect(() => {
+    saveHistory(messages);
+  }, [messages]);
 
   const handleSend = useCallback(async () => {
     const text = input.trim();
@@ -36,22 +77,16 @@ export default function Chat({ apiConfig }: Props) {
     setStreamingContent('');
 
     try {
-      // 1. Detect heroes from user input
       const heroes = await detectHeroes(text);
-
-      // 2. Build system prompt with hero context
       const { systemPrompt: sp, detectedHeroes: dh } = await buildSystemPrompt(text, heroes);
-      setSystemPrompt(sp);
       setDetectedHeroes(dh.map(h => h.name_cn));
 
-      // 3. Prepare all messages for API
       const llmConfig: LLMConfig = {
         endpoint: apiConfig.endpoint,
         model: apiConfig.model,
         key: apiConfig.key,
       };
 
-      // Build context: include existing messages but don't send system prompt (it's in the API call)
       const history = messages.map(m => ({ role: m.role, content: m.content }));
       const allMsgs = [...history, userMsg];
 
@@ -88,9 +123,54 @@ export default function Chat({ apiConfig }: Props) {
     }
   };
 
+  // 导出历史
+  const handleExport = () => {
+    const data: HistoryData = { messages, updatedAt: new Date().toISOString() };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const dateStr = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `ow-coach-history-${dateStr}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setShowMenu(false);
+  };
+
+  // 导入历史
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const data = JSON.parse(evt.target?.result as string) as HistoryData;
+        if (Array.isArray(data.messages) && data.messages.length > 0) {
+          setMessages(data.messages);
+          setShowMenu(false);
+        } else {
+          alert('文件格式不正确：未找到有效的聊天记录');
+        }
+      } catch {
+        alert('文件解析失败，请确认是 OW Coach 导出的 JSON 文件');
+      }
+    };
+    reader.readAsText(file);
+    // 重置 input，允许重复选同文件
+    e.target.value = '';
+  };
+
+  // 清空历史
+  const handleClear = () => {
+    if (messages.length <= 1) return;
+    if (!confirm('确定清空所有聊天记录吗？此操作不可撤销。')) return;
+    clearHistory();
+    setMessages([{ role: 'assistant', content: WELCOME_MSG }]);
+    setDetectedHeroes([]);
+    setShowMenu(false);
+  };
+
   const renderContent = (content: string) => {
-    // Simple markdown-like rendering for now
-    // react-markdown is imported but we'll use basic formatting
     const lines = content.split('\n');
     return lines.map((line, i) => {
       if (line.startsWith('## ')) {
@@ -117,16 +197,41 @@ export default function Chat({ apiConfig }: Props) {
 
   return (
     <div className="chat-container">
+      {/* Header */}
       <div className="chat-header">
         <h1>OW Coach</h1>
         <span className="subtitle">守望先锋 AI 教练</span>
+
+        <div className="header-menu-area">
+          <button className="btn-menu" onClick={() => setShowMenu(!showMenu)} title="更多操作">
+            ⋯
+          </button>
+          {showMenu && (
+            <div className="menu-dropdown">
+              <button className="menu-item" onClick={handleExport}>📥 导出聊天记录</button>
+              <button className="menu-item" onClick={() => fileInputRef.current?.click()}>📤 导入聊天记录</button>
+              {messages.length > 1 && (
+                <button className="menu-item menu-danger" onClick={handleClear}>🗑️ 清空记录</button>
+              )}
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".json"
+            style={{ display: 'none' }}
+            onChange={handleImport}
+          />
+        </div>
+
         {detectedHeroes.length > 0 && (
           <span className="detected-badge">
-            检测到：{detectedHeroes.join('、')}
+            {detectedHeroes.join('、')}
           </span>
         )}
       </div>
 
+      {/* Messages */}
       <div className="chat-messages">
         {messages.map((msg, i) => (
           <div key={i} className={`message ${msg.role}`}>
@@ -156,6 +261,7 @@ export default function Chat({ apiConfig }: Props) {
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Input */}
       <div className="chat-input-area">
         <textarea
           ref={inputRef}
