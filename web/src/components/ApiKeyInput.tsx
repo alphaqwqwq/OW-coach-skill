@@ -13,8 +13,8 @@ interface Props {
   initialConfig?: ApiConfig;
 }
 
-const DEFAULT_ENDPOINT = 'https://api.openai.com';
-const DEFAULT_MODEL = 'gpt-4o-mini';
+const DEFAULT_ENDPOINT = 'https://api.deepseek.com';
+const DEFAULT_MODEL = 'deepseek-v4-flash';
 
 // 预设模型配置
 interface ModelPreset {
@@ -24,13 +24,25 @@ interface ModelPreset {
 }
 
 const MODEL_PRESETS: ModelPreset[] = [
-  { label: 'GPT-4o (OpenAI)', model: 'gpt-4o', endpoint: 'https://api.openai.com' },
-  { label: 'GPT-4o-mini (OpenAI)', model: 'gpt-4o-mini', endpoint: 'https://api.openai.com' },
-  { label: 'DeepSeek V3 (deepseek-chat)', model: 'deepseek-chat', endpoint: 'https://api.deepseek.com' },
-  { label: 'DeepSeek R1 (deepseek-reasoner)', model: 'deepseek-reasoner', endpoint: 'https://api.deepseek.com' },
-  { label: 'DeepSeek V3 (SiliconFlow)', model: 'deepseek-ai/DeepSeek-V2.5', endpoint: 'https://api.siliconflow.cn' },
-  { label: 'Qwen 2.5 (阿里云)', model: 'qwen2.5-72b-instruct', endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1' },
-  { label: 'GLM-4 (智谱)', model: 'glm-4', endpoint: 'https://open.bigmodel.cn/api/paas/v4' },
+  // ===== OpenAI (2026年7月最新) =====
+  { label: 'GPT-5.6 Terra (OpenAI · 均衡版)', model: 'gpt-5.6-terra', endpoint: 'https://api.openai.com' },
+  { label: 'GPT-5.6 Luna (OpenAI · 轻量实惠)', model: 'gpt-5.6-luna', endpoint: 'https://api.openai.com' },
+
+  // ===== DeepSeek V4 (2026年4月发布，旧名 deepseek-chat 明日停用) =====
+  { label: 'DeepSeek V4 Flash (¥0.001/M · 极致性价比)', model: 'deepseek-v4-flash', endpoint: 'https://api.deepseek.com' },
+  { label: 'DeepSeek V4 Pro (旗舰推理 · 1M上下文)', model: 'deepseek-v4-pro', endpoint: 'https://api.deepseek.com' },
+
+  // ===== Kimi K3 (2026年7月刚发布 · 2.8万亿参数开源) =====
+  { label: 'Kimi K3 (月之暗面 · 2.8T开源旗舰)', model: 'kimi-k3', endpoint: 'https://api.moonshot.cn' },
+
+  // ===== Claude (Anthropic) =====
+  { label: 'Claude Fable 5 (Anthropic · 旗舰)', model: 'claude-5-fable', endpoint: 'https://api.anthropic.com' },
+
+  // ===== 国产云平台 =====
+  { label: 'Qwen 3.8 Max (阿里云 · 最新旗舰)', model: 'qwen3.8-max-preview', endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1' },
+  { label: 'GLM-5.2 (智谱 · 最新旗舰)', model: 'glm-5.2', endpoint: 'https://open.bigmodel.cn/api/paas/v4' },
+
+  // ===== 自定义 =====
   { label: '自定义模型', model: '', endpoint: '' },
 ];
 

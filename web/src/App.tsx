@@ -33,7 +33,7 @@ export default function App() {
               <div className="config-info">
                 <p>首次使用需要配置 API 信息：</p>
                 <ul>
-                  <li>模型：选择预设（推荐 DeepSeek V3 或 GPT-4o-mini），选"自定义模型"可手动输入</li>
+                  <li>模型：预设已更新到2026最新（推荐 DeepSeek V4 Flash 或 GPT-5.6 Luna），选"自定义模型"可手动输入</li>
                   <li>Endpoint：根据预设自动填充，也可手动修改</li>
                   <li>API Key：你的 API 密钥，仅保存在本地浏览器</li>
                 </ul>
