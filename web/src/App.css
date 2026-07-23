@@ -599,4 +599,294 @@ body {
   .message {
     max-width: 95%;
   }
+
+  .home-header {
+    padding: 32px 20px 24px;
+  }
+
+  .tool-grid {
+    padding: 0 16px 32px;
+    grid-template-columns: 1fr;
+  }
+
+  .tool-card {
+    padding: 16px;
+  }
+
+  .brand-name {
+    font-size: 24px;
+  }
+}
+
+/* =========================================
+   Home Page
+   ========================================= */
+.home-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(ellipse at top center, #1a1a2e 0%, #0f0f14 70%);
+}
+
+.home-header {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.brand-icon {
+  font-size: 28px;
+}
+
+.brand-name {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text);
+  letter-spacing: -0.5px;
+}
+
+.brand-dot {
+  color: var(--text-muted);
+  font-size: 20px;
+}
+
+.brand-tag {
+  font-size: 16px;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+.home-subtitle {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* ===== Tool Grid ===== */
+.tool-grid {
+  flex: 1;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+  width: 100%;
+  font-family: var(--font);
+  color: var(--text);
+  position: relative;
+}
+
+.tool-card:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow);
+}
+
+.tool-card:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.tool-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.tool-card--soon {
+  border-style: dashed;
+}
+
+.tool-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.tool-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.tool-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tool-badge {
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--bg-input);
+  color: var(--text-dim);
+  padding: 1px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+.tool-desc {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.tool-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.tool-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--bg-input);
+  color: var(--text-muted);
+}
+
+.tool-arrow {
+  font-size: 18px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.tool-card:hover:not(:disabled) .tool-arrow {
+  transform: translateX(4px);
+  color: var(--accent);
+}
+
+/* ===== Home Footer ===== */
+.home-footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+/* =========================================
+   OW Coach Page
+   ========================================= */
+.ow-coach-page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+.btn-back-chat {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  font-size: 13px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+}
+
+.btn-back-chat:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-config-toggle-chat {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-config-toggle-chat:hover {
+  border-color: var(--accent);
+}
+
+/* Override chat-container height when inside OW Coach page */
+.ow-coach-page .chat-container {
+  height: 0;
+  flex: 1;
+}
+
+/* ===== Config Page back button ===== */
+.btn-back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  font-size: 14px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-family: var(--font);
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.btn-back:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.config-page {
+  position: relative;
+}
+
+/* Config page needs to fill the page when inside OW Coach */
+.ow-coach-page .config-page {
+  height: 100vh;
 }
