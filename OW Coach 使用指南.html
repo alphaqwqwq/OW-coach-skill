@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OW Coach 使用指南</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background: #0a0e1a;
+    color: #e0e4f0;
+    line-height: 1.8;
+  }
+  .hero {
+    background: linear-gradient(135deg, #0a0e1a 0%, #1a1f3a 50%, #0d1b2a 100%);
+    padding: 80px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(255, 153, 0, 0.08) 0%, transparent 60%),
+                radial-gradient(circle at 70% 50%, rgba(0, 180, 255, 0.08) 0%, transparent 60%);
+  }
+  .hero h1 {
+    font-size: 3em;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff9900, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+  }
+  .hero p {
+    color: #8899b0;
+    font-size: 1.2em;
+    margin-top: 16px;
+    position: relative;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px;
+  }
+  .section {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 32px;
+  }
+  .section h2 {
+    font-size: 1.6em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255,153,0,0.3);
+    display: inline-block;
+  }
+  .section h3 {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #ff9900;
+    margin: 24px 0 10px;
+  }
+  .section p {
+    margin-bottom: 14px;
+    color: #c8d0e0;
+  }
+  .highlight {
+    background: rgba(255,153,0,0.1);
+    border-left: 3px solid #ff9900;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+  }
+  .highlight.good {
+    border-left-color: #00c853;
+    background: rgba(0,200,83,0.08);
+  }
+  .highlight.bad {
+    border-left-color: #ff1744;
+    background: rgba(255,23,68,0.08);
+  }
+  .highlight.blue {
+    border-left-color: #448aff;
+    background: rgba(68,138,255,0.08);
+  }
+  .badge {
+    display: inline-block;
+    background: #ff9900;
+    color: #0a0e1a;
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 12px;
+    margin-right: 6px;
+  }
+  .steps {
+    counter-reset: step;
+  }
+  .step {
+    counter-increment: step;
+    padding: 20px 0 20px 48px;
+    position: relative;
+  }
+  .step::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 20px;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #ff9900, #ff6b35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #0a0e1a;
+  }
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 52px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(255,153,0,0.2);
+  }
+  ul, ol {
+    padding-left: 20px;
+    margin: 10px 0 14px;
+    color: #c8d0e0;
+  }
+  li { margin-bottom: 6px; }
+  code {
+    background: rgba(255,255,255,0.08);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #ff9900;
+  }
+  .tag { color: #8899b0; font-size: 0.85em; }
+  .footer {
+    text-align: center;
+    padding: 40px;
+    color: #556;
+    font-size: 0.9em;
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 2em; }
+    .section { padding: 24px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>OW Coach 使用指南</h1>
+  <p>纯对话式守望先锋 AI 教练 — 不说废话，不查战绩，只聊游戏</p>
+</div>
+
+<div class="container">
+
+<div class="section">
+  <h2>这是什么</h2>
+  <p>OW Coach 是一个 <strong>纯对话式的守望先锋 AI 教练</strong>。它和其他 OW 教练工具最大的区别是：<strong>不看你的战绩、不查 KDA、没有 / 命令菜单</strong>。你直接和它聊天就行，就像找一个真人教练陪聊。</p>
+  <p>框架的核心不是爬数据，而是三组提示词（人格 + 方法论 + 知识约束）加一个<strong>跨对话玩家档案系统</strong>。教练的工作方式像现实中的好教练一样：<strong>倾听 → 提问引导 → 给具体建议</strong>。</p>
+</div>
+
+<div class="section">
+  <h2>怎么用 — 直接聊天</h2>
+  <p><strong>不用学任何命令。</strong> 把你在游戏中的困惑、战况、想练的东西用自然语言说出来就行：</p>
+
+  <div class="highlight">
+    「我拉玛刹打对面奥丽莎总是打不过，怎么办」
+  </div>
+  <div class="highlight">
+    「今天有一波国王大道进攻 A 点，我换了三次英雄都进不去」
+  </div>
+  <div class="highlight">
+    「我想练猎空，从哪开始？」
+  </div>
+
+  <p>教练会根据你说的话<strong>提问引导你发现问题</strong>，然后给具体的可操作建议。</p>
+</div>
+
+<div class="section">
+  <h2>教练的工作方式</h2>
+
+  <h3>苏格拉底式 — 提问优先于断言</h3>
+  <p>教练不会直接说「你应该怎么打」。他会先通过提问还原场景：</p>
+
+  <div class="highlight blue">
+    <p><strong>你：</strong>我拉玛刹打不过对面奥丽莎</p>
+    <p><strong>教练：</strong>你站在哪个位置开的团？有没有掩体？你比对面高还是低？你觉得最大的问题出在哪？</p>
+  </div>
+
+  <p>等场景清晰后再给分析：</p>
+
+  <div class="highlight">
+    「你站在正面和奥丽莎对射，这就是问题。拉玛刹打奥丽莎的关键不是正面拼火力，是空间差。shift 接近之后不要站在原地对射，要找掩体夹角打。」
+  </div>
+
+  <h3>三层教练流程</h3>
+  <div class="steps">
+    <div class="step">
+      <strong>诊断 Diagnosis</strong> — 先定位具体问题，不直接给方案。信息不足就追问，不猜测。
+    </div>
+    <div class="step">
+      <strong>指导 Instruction</strong> — 问题清晰后给出可操作方案 + 理由 + 练习方法。
+    </div>
+    <div class="step">
+      <strong>反馈 Feedback</strong> — 下次对话会主动问：「上次说的站位调整，你试了吗？」
+    </div>
+  </div>
+
+  <h3>教练只给「选择」不给「最佳」</h3>
+  <p>教练从不说「xxx 最强」或「xxx 最佳玩法」——只说「选 xxx 的优势是…代价是…什么时候选更合理…」</p>
+</div>
+
+<div class="section">
+  <h2>核心特性：跨对话记忆</h2>
+
+  <p>这是最特别的功能——<strong>换了一个新对话窗口，教练自动记得你</strong>。</p>
+
+  <div class="highlight good">
+    <p><strong>第一轮对话</strong></p>
+    <p>你：我拉玛刹总是在第一个团就死</p>
+    <p>教练：提问诊断 → 给建议（自动记录到玩家档案）</p>
+    <p class="tag">└─ 档案已保存：诊断问题 + 给的方案</p>
+  </div>
+
+  <div class="highlight good">
+    <p><strong>第二轮对话（新窗口）</strong></p>
+    <p>你：我今天试了调整站位，好了一些</p>
+    <p>教练：上次说的站位调整效果怎么样？现在还有没有别的痛点？</p>
+    <p class="tag">└─ 教练自动调用了历史档案，自然接上对话</p>
+  </div>
+
+  <p>不需要每次重新说一遍「我之前有什么问题」。教练记住了你是谁、之前有什么问题、给过什么方案。</p>
+</div>
+
+<div class="section">
+  <h2>如何获得更好的教练体验</h2>
+
+  <h3>✅ 描述越具体，分析越有用</h3>
+  <div class="highlight bad">
+    <p><strong>差：</strong>「我死了」</p>
+    <p class="tag">教练只能猜原因，效果打折扣</p>
+  </div>
+  <div class="highlight good">
+    <p><strong>好：</strong>「国王大道 A 点进攻，我拉玛刹从左边大道直接走，被对面安娜禁疗+奥丽莎戳死」</p>
+    <p class="tag">教练能精准分析你的决策点</p>
+  </div>
+
+  <h3>✅ 持续跟进效果</h3>
+  <p>如果你之前聊过某个问题，下次可以直接说进展：</p>
+  <div class="highlight good">
+    「上次说的站位问题我练了一周，好了一些，但换到多拉多又不知道怎么站了」
+  </div>
+
+  <h3>✅ 从基础练新英雄</h3>
+  <div class="highlight good">
+    「我想练骇灾，完全不知道怎么上手」→ 教练会从基础开始引导
+  </div>
+
+  <h3>✅ 发现教练说错了，直接指出</h3>
+  <div class="highlight good">
+    <p>直接说「你说的不对」，给出正确信息。</p>
+    <p>教练会承认错误，基于正确信息重新分析。</p>
+    <p class="tag">他是帮你梳理思路的，不是来争对错的。</p>
+  </div>
+</div>
+
+<div class="section">
+  <h2>教练做不到的事</h2>
+  <ul>
+    <li>✗ 查你的战绩 / KDA / 胜率</li>
+    <li>✗ 查别人的战绩</li>
+    <li>✗ 给回放码自动分析（除非你描述战况）</li>
+    <li>✗ 说「xxx 最强」或「当前版本最佳」</li>
+    <li>✗ 编造多步骤战术框架（他可能忽略前提条件）</li>
+    <li>✗ 精确的伤害数值、射速、CD（版本会改，他可能记错）</li>
+    <li>✗ 知道每张地图的精确点位名和二楼通路</li>
+  </ul>
+  <p><strong>默认场景是 5v5 预设职责</strong>，每队 1 坦 2 输出 2 支援。</p>
+  <p>如果教练问你「你附近有高台吗？左右开阔还是有掩体？」——他是在通过提问还原空间信息。这不是他不知道怎么玩，是他的教练方式。</p>
+</div>
+
+<div class="section">
+  <h2>一句话总结</h2>
+  <div class="highlight" style="font-size: 1.1em; text-align: center; border-left: none; border: 2px solid #ff9900; border-radius: 12px;">
+    <strong>直接聊就行。</strong> 不需要学任何命令。教练记得你。你说战况，他提问，给建议。纯聊天。
+  </div>
+</div>
+
+</div>
+
+<div class="footer">
+  OW Coach 框架 &mdash; 纯对话式守望先锋 AI 教练
+</div>
+
+</body>
+</html>

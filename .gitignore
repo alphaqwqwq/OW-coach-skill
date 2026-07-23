@@ -1,0 +1,22 @@
+# === Python ===
+__pycache__/
+*.pyc
+*.pyo
+
+# === 会话数据 ===
+coach/sessions/
+
+# === API 缓存（可重新生成）===
+coach/hero_db/scrape_cache/
+coach/hero_db/fandom_cache/
+
+# === 前端构建 ===
+web/node_modules/
+web/dist/
+web/tsconfig.tsbuildinfo
+
+# === 调试脚本（临时分析用）===
+scripts/debug_*.py
+scripts/check_*.py
+scripts/test_*.py
+scripts/reaper_removed_sample.html

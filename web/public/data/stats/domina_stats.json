@@ -1,0 +1,10 @@
+{
+  "reconstruction": {
+    "_skill_name": "护盾重构",
+    "转化比例": "造成伤害的75%"
+  },
+  "photon-magnum": {
+    "_skill_name": "光子马格南",
+    "蓄力时间": "0.8秒"
+  }
+}
