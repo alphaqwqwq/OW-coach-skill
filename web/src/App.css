@@ -594,17 +594,25 @@ body {
   .config-page { padding: clamp(32px, 4vw, 64px); }
 }
 
-/* ===== Responsive ===== */
+/* ===== Mobile (<=600px) ===== */
 @media (max-width: 600px) {
   .config-card { padding: clamp(18px, 4vw, 24px) clamp(14px, 3vw, 20px); }
 
   .chat-header { padding: clamp(10px, 2vw, 12px) clamp(12px, 3vw, 16px); }
+  .chat-header h1 { font-size: clamp(16px, 4vw, 20px); }
 
-  .chat-messages { padding: clamp(10px, 2.5vw, 12px) clamp(12px, 3vw, 16px); }
+  .chat-messages { padding: clamp(10px, 2.5vw, 12px) clamp(12px, 3vw, 16px); gap: 14px; }
 
-  .chat-input-area { padding: clamp(10px, 2.5vw, 12px) clamp(12px, 3vw, 16px); }
+  .chat-input-area { padding: clamp(10px, 2.5vw, 12px) clamp(12px, 3vw, 16px); gap: 8px; }
+  .chat-input-area textarea { font-size: 14px; padding: 10px 12px; }
 
-  .message { max-width: min(95%, 100%); }
+  .message { max-width: 98%; gap: 8px; }
+  .bubble { padding: 10px 14px; font-size: 14px; line-height: 1.6; }
+  .bubble h3 { font-size: 15px; }
+  .avatar { width: 28px; height: 28px; font-size: 14px; }
+
+  .btn-send { padding: 10px 16px; font-size: 14px; min-width: 60px; }
+  .detected-badge { font-size: 11px; padding: 3px 10px; }
 
   .home-header { padding: clamp(24px, 6vw, 32px) clamp(14px, 3vw, 20px) clamp(18px, 4vw, 24px); }
 
@@ -616,34 +624,48 @@ body {
   .tool-card { padding: clamp(12px, 3vw, 16px); }
 
   .brand-name { font-size: clamp(20px, 5vw, 24px); }
+  .config-header h1 { font-size: clamp(20px, 5vw, 26px); }
+  .config-desc { font-size: 13px; }
+  .field input, .key-row input, .model-select { font-size: 14px; padding: 10px 12px; }
+  .btn-save { padding: 12px 20px; font-size: 14px; }
+  .btn-start { padding: 12px 20px; font-size: 14px; }
+  .menu-dropdown { min-width: 160px; }
 }
+
 
 /* ===== Small phone (<=360px) ===== */
 @media (max-width: 360px) {
-  .config-card { padding: 16px 12px; }
-  .config-header h1 { font-size: 20px; }
-  .config-desc { font-size: 12px; }
-  .chat-header { padding: 8px 10px; gap: 6px; }
-  .chat-header h1 { font-size: 14px; }
+  .config-card { padding: 14px 10px; }
+  .config-header h1 { font-size: 18px; }
+  .config-desc { font-size: 11px; margin-bottom: 14px; }
+  .chat-header { padding: 6px 8px; gap: 4px; }
+  .chat-header h1 { font-size: 15px; }
   .chat-header .subtitle { display: none; }
-  .chat-messages { padding: 8px 10px; gap: 10px; }
-  .chat-input-area { padding: 8px 10px; gap: 6px; }
-  .chat-input-area textarea { padding: 8px 10px; font-size: 12px; }
-  .btn-send { padding: 8px 12px; font-size: 12px; min-width: 56px; }
-  .message { max-width: 98%; }
-  .bubble { padding: 8px 10px; font-size: 12px; }
-  .avatar { width: 24px; height: 24px; font-size: 12px; }
+  .chat-messages { padding: 8px; gap: 8px; }
+  .chat-input-area { padding: 8px; gap: 6px; }
+  .chat-input-area textarea { padding: 8px; font-size: 13px; }
+  .btn-send { padding: 8px 12px; font-size: 13px; min-width: 50px; }
+  .message { max-width: 100%; gap: 6px; }
+  .bubble { padding: 8px 12px; font-size: 13px; }
+  .avatar { width: 22px; height: 22px; font-size: 11px; }
   .detected-badge { font-size: 10px; padding: 2px 8px; }
-  .btn-menu { width: 28px; height: 28px; font-size: 14px; }
+  .btn-menu { width: 26px; height: 26px; font-size: 12px; }
   .menu-item { padding: 6px 10px; font-size: 12px; }
-  .menu-dropdown { min-width: 130px; }
-  .btn-config-toggle { width: 34px; height: 34px; font-size: 16px; bottom: 60px; right: 10px; }
+  .menu-dropdown { min-width: 120px; }
+  .btn-config-toggle { width: 32px; height: 32px; font-size: 14px; bottom: 50px; right: 8px; }
   .brand-name { font-size: 18px; }
-  .tool-card { padding: 12px; gap: 10px; }
-  .tool-icon { width: 36px; height: 36px; font-size: 18px; }
-  .tool-title { font-size: 13px; }
+  .tool-card { padding: 10px; gap: 8px; }
+  .tool-icon { width: 32px; height: 32px; font-size: 16px; }
+  .tool-title { font-size: 12px; }
   .tool-desc { font-size: 11px; }
-  .home-footer { font-size: 10px; padding: 14px; }
+  .home-footer { font-size: 10px; padding: 12px; }
+  .field input, .key-row input, .model-select { font-size: 13px; padding: 8px 10px; }
+  .btn-save { padding: 10px 16px; font-size: 13px; }
+  .btn-start { padding: 10px 16px; font-size: 13px; }
+  .field label { font-size: 11px; }
+  .api-form { gap: 10px; }
+  .config-info { padding: 10px; font-size: 11px; }
+  .btn-icon { padding: 5px 8px; font-size: 13px; }
 }
 
 /* =========================================
